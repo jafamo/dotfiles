@@ -1,0 +1,102 @@
+function parse_git_branch {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo "("${ref#refs/heads/}")"
+    }
+
+
+function descomprimir {
+    case "$1" in
+	*.tgz)
+	    tar -xvzf "$1" 
+	    ;;
+        *.tar)
+            tar xvf "$1"
+            ;;
+        *tar.gz)
+             tar xzvf "$1"
+             ;;
+         *.gz)
+             gzip -d "$1"
+             ;;
+         *.bz2)
+             bzip2 -d "$1"
+             ;;
+         *tar.bz2)
+             tar jvxf "$1"
+             ;;
+         *.zip)
+             unzip "$1"
+             ;;
+         *.lha)
+             lha -x "$1"
+             ;;
+         *.zoo)
+             zoo -x "$1"
+             ;;
+         *.rar)
+             unrar -x "$1"
+             ;;
+         *)
+             echo "$1 es inválido, por ejemplo, use archivo.tar.gz, siempre
+             incluya la extensión "
+             
+             exit
+             ;;
+             
+     esac
+ }
+
+
+
+
+
+
+
+## netstat with colours
+
+netstatColor () {
+
+cyan="\E[1;36m\E[1m";
+normal="\E[m";
+blue="\E[34m\E[1m";
+violet="\E[35m\E[1m";
+red="\E[31m\E[1m";
+yellow="\E[33m\E[1m";
+green="\E[37m\E[32m\E[1m";
+text="\E[1;37m\E[1m";
+ 
+if [ "$UID" != "0" ]; then
+    echo -e "$red$0: You will get more information if you have root privileges. Try sudo $0$normal"
+fi
+ 
+netstat -natp | \
+while read line; do
+ 
+    if [ `echo $line | awk '{print($1)}'` = "Proto" ]; then
+        echo -e "$yellow=====================================================================================================$normal"
+        echo -e "$text$line$normal"
+        echo -e "$yellow=====================================================================================================$normal"
+    else
+ 
+        state=`echo $line | awk '{print($6)}'`
+        color=$normal
+        case $state in
+            "ESTABLISHED")
+                color=$green;;
+            "SYN_SENT" | "SYN_RECV")
+                color=$yellow;;
+            "FIN_WAIT1" | "FIN_WAIT2" |"TIME_WAIT")
+                color=$violet;;
+            "CLOSE" | "CLOSE_WAIT" | "LAST_ACK" | "CLOSING" )
+                color=$blue;;
+            "LISTEN")
+                color=$cyan;;
+            "UNKNOWN")
+                color=$red;;
+            *)
+        esac
+        echo -e "$color$line$normal"
+ 
+    fi
+done;
+}
