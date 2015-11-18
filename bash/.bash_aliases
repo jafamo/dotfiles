@@ -5,6 +5,13 @@ if [ -x /usr/bin/dircolors ]; then
 ####rsync con host:server
 
 #alias rsyncServer='rsync -rtvz /home/$user/programacion/workspace/Servlets/ root@server:/root/servlets/'
+# aliases for git
+# Alias  .gitconfig
+alias gitoneline="git log --oneline --decorate --graph"
+alias gitonelinedates="git log --pretty=format:'%h was %an, %ai, message: %s'" 
+#alias gitlogall="git log --pretty=format:'%h was %an, %ai,message:%s' --oneline --decorate"
+
+alias gitlogall="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
 
 ## ls ## {{{
@@ -20,7 +27,11 @@ alias lm='la | more'
 # }}}
 
 ### Aptitude ###
-alias aptitude='sudo aptitude'
+#alias aptitude='sudo aptitude'
+
+## APT-GET
+alias aptsearch='sudo apt-cache show'
+alias aptsearchall='sudo apt-cache showpkg'
 
 
     						
@@ -31,7 +42,7 @@ alias aptitude='sudo aptitude'
 
 
     #alias top
-    #alias topuser='top -u $user'    				
+    alias topuser='top -u $user'    				
     								
     #alias rm
     alias rm='rm -rfv'
@@ -60,13 +71,26 @@ alias ..='cd ..'
 # }}}
 
 
+## Comands with rsync
+alias rsyncUpdate='rsync -avu --progress' #
+alias rsyncSincro='rsync -rtvu --delete --progress' #syncronice two directorys 
+
+
+# r = recursive
+# t = conserve time modify files
+# v = output info 
+# u = update origin/ destine/
+
+
+
 ## Safety features ## {{{
-alias cprsync='rsync -P'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -I'
 #safer alternative w/ timeout, not stored in history
 
+## Editors
+alias nano='nano -c'
 
 man() {
   env \
@@ -81,3 +105,6 @@ man() {
 }
 
 fi
+
+
+
