@@ -1,0 +1,123 @@
+# Conky settings #
+background yes
+update_interval 1
+double_buffer yes
+no_buffers yes
+imlib_cache_size 10
+
+# Window specifications #
+gap_x 0
+gap_y 0
+minimum_size 268 1220
+maximum_width 268
+alignment top_right
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_argb_visual yes
+own_window_argb_value 255
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+border_inner_margin 0
+border_outer_margin 0
+
+# Graphics settings #
+draw_shades no
+default_shade_color AAAAAA
+draw_outline no
+default_outline_color AAAAAA
+draw_borders no
+draw_graph_borders no
+default_graph_size 26 80
+show_graph_scale no
+show_graph_range no
+
+# Text settings #
+use_xft yes
+xftalpha 0
+xftfont Droid Sans:size=8
+text_buffer_size 256
+override_utf8_locale yes
+
+# Useful shortenings #
+short_units yes
+pad_percents  2
+top_name_width 30
+
+# Color scheme #
+default_color FFFFFF
+color1 FFFFFF
+color2 FFFFFF #white
+color3 FFFFFF
+color4 FFFFFF
+color5 DCDCDC
+color6 FFFFFF
+color7 7f8ed3 # blue
+color8 0077ff #strong blue
+
+TEXT
+${color8}BATERIA     ${color2}${battery BAT1} 
+
+${color 2}System:
+
+${color2}${execi 99999 cat /proc/cpuinfo | grep "model name" -m1 | cut -d":" -f2 | cut -d" " -f2- | sed 's#Processor ##'}
+${color #0077ff}Uptime:$color $uptime ${color #0077ff}
+${color8}$nodename   ${color2}${alignc}$sysname $kernel ${alignr}
+#$color${time %l:%M:%p}
+
+ Temperatura do processador: ${hwmon 0 temp 2}°C 
+${color #0077ff}CPU 0:$color ${cpu cpu0}% ${color #0077ff}${cpubar 5,85}   ${color #0077ff}${alignc} ${freq 1}MHz
+
+${color #0077ff}CPU 1:$color ${cpu cpu1}% ${color #0077ff}${cpubar 5,85}   ${color #0077ff}${alignc} ${freq 2}MHz
+
+${color #0077ff}RAM Usage:$color $mem${color #0077ff}/${color}$memmax - $memperc% ${color #0077ff}$membar
+${color #0077ff}Swap Usage:$color $swap${color #0077ff}/${color}$swapmax - $swapperc% ${color #0077ff}${swapbar}
+#${color2}${cpugraph 0 32,155 104E8B 0077ff} $alignr${color2}${diskiograph 32,155 104E8B 0077ff 750}
+
+${hr 2}
+
+${color 2}Networking:  
+
+${color2}Address: ${color #7f8ed3}${addr wlp2s0} ${alignr}${color2}ESSID: ${color7}${font Roboto:style=Normal:size=9}${wireless_essid wlp2s0}2
+ ${color2}Down:${color #7f8ed3} ${downspeed wlp2s0} k/s  ${color2}${offset 80}Up:${color #7f8ed3} ${upspeed wlp2s0} k/s
+${color2}${downspeedgraph wlp2s0 32,150 000000 7f8ed3} ${color 2}${upspeedgraph wlp2s0 32,150 000000 7f8ed3}
+ ${color2}TCP Connections: ${color #7f8ed3}${tcp_portmon 1 65535 count}
+
+ ${color2}TotalDown ${color7}${totaldown wlp2s0} ${color2}${alignr}TotalUP ${color7}${totalup wlp2s0}
+${color8}
+${hr 2}
+# Cpu, memory and disk IO
+# Proceses
+\
+#${goto 1}${color1}Proc${color}${alignr 39}${color1}${color1}Mem${color}
+#${color #0077ff}Top Processes:
+#${color #0077ff}Name              ${alignr 1}PID     ${alignr 1}CPU%   ${alignr 1}MEM%
+#$color  ${top name 1}${alignr 1}   ${top pid 1}   ${alignr 1} ${top cpu 1}  ${alignr 1} ${top mem 1}
+#$color  ${top name 2}${alignr 1}   ${top pid 2}   ${alignr 1} ${top cpu 2}  ${alignr 1} ${top mem 2}
+#$color  ${top name 3}${alignr 1}   ${top pid 3}   ${alignr 1} ${top cpu 3}  ${alignr 1} ${top mem 3}
+#${color #0077ff}Mem usage
+#$color ${top_mem name 1}${alignr 1} ${top_mem pid 1}${alignr 1} ${top_mem cpu 1}${alignr 1} ${top_mem mem 1}
+#$color ${top_mem name 2}${alignr 1} ${top_mem pid 2}${alignr 1} ${top_mem cpu 2}${alignr 1} ${top_mem mem 2}
+#$color ${top_mem name 3}${alignr 1} ${top_mem pid 3}${alignr 1} ${top_mem cpu 3}${alignr 1} ${top_mem mem 3}
+#/
+#${goto 1}${color2}${top_mem name 1}${color}${alignr 1}${top_mem mem_res 1} ${top cpu 1} %
+#${goto 1}${color2}${top_mem name 2}${color}${alignr 1}${top_mem mem_res 2} ${top cpu 2} %
+#${goto 1}${color2}${top_mem name 3}${color}${alignr 1}${top_mem mem_res 3} ${top cpu 3} %
+#${goto 1}${color2}${top_mem name 4}${color}${alignr 1}${top_mem mem_res 4} ${top cpu 4} %
+#${goto 1}${color2}${top_mem name 5}${color}${alignr 1}${top_mem mem_res 5} ${top cpu 5} %
+#${hr 2}
+#\
+\
+#${font FreeSans:style=Bold:pixelsize=11}
+${color 2}File System ${font FreeSans:pixelsize=14}
+
+${color2}/ ${color8}${alignr}   Free: ${fs_free /} $alignr Used: ${fs_used /}
+${color7}${fs_bar 8 /}${fs_size /}
+
+${color2}/home ${color8}${alignr}   Free: ${fs_free /home} $alignr Used: ${fs_used /home}
+${color7}${fs_bar 8 /home}${fs_size /home}
+
+${color2}/data ${color8}${alignr}   Free: ${fs_free /mnt/data} $alignr Used: ${fs_used /mnt/data}
+${color7}${fs_bar 8 /mnt/data}${fs_size /mnt/data}
+
+
+#${hr 2}
