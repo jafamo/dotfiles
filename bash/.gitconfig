@@ -1,6 +1,6 @@
 [user]
-	name = Javier
-	email = jafamo@gmail.com
+	name = username
+	email = email
 
 [core]
 	autocrlf = input
