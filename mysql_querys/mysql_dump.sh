@@ -1,4 +1,4 @@
-
+#!/bin/bash
 #----------------------------------------------------------
 # a simple mysql database backup script.
 # version 2, updated March 26, 2011.
