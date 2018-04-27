@@ -5,15 +5,11 @@
 						come at the same time.
 
 --add-drop-database		Drop table if EXISTS and ADD table.
-
 --routines
-
-
---triggers
-
---events
+$(date +%Y-%m-%d-%H.%M.%S) 		add date.
  */
 
 
-mysqldump --user=root --password=XXXX  --routines --trigers --events --add-drop-database --single-transaction DATABASE  > confluence_.sql
+
+mysqldump --user=root --password=XXXX  --add-drop-database --single-transaction DATABASE  > backup_$(date +%Y-%m-%d-%H.%M.%S)_.sql
 
