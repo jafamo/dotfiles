@@ -1,0 +1,150 @@
+#function parse_git_branch {
+#  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+#    echo "("${ref#refs/heads/}")"
+#}
+
+
+
+
+
+
+function parse_git_branch () {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+function parse_git_tag () {
+  git describe --tags 2> /dev/null
+}
+
+function parse_git_branch_or_tag {
+  local OUT="$(parse_git_branch)"
+  if [ "$OUT" == " ((no branch))" ]; then
+    OUT="($(parse_git_tag))";
+  fi
+  echo $OUT
+}
+
+
+
+# Creates an archive (*.tar.gz) from given directory.
+function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; }
+
+# Create a ZIP archive of a file or folder.
+function makezip() { zip -r "${1%%/}.zip" "$1" ; }
+
+# Search cadena in file and show 
+function buscarCadena(){ grep -rnw "$1" --color -e "$2"; }
+
+
+
+function descomprimir {
+    case "$1" in
+	*.tgz)
+	    tar -xvzf "$1" 
+	    ;;
+        *.tar)
+            tar xvf "$1"
+            ;;
+        *tar.gz)
+             tar xzvf "$1"
+             ;;
+         *.gz)
+             gzip -d "$1"
+             ;;
+         *.bz2)
+             bzip2 -d "$1"
+             ;;
+         *tar.bz2)
+             tar jvxf "$1"
+             ;;
+         *.zip)
+             unzip "$1"
+             ;;
+         *.lha)
+             lha -x "$1"
+             ;;
+         *.zoo)
+             zoo -x "$1"
+             ;;
+         *.rar)
+             unrar -x "$1"
+             ;;
+         *)
+             echo "$1 es inválido, por ejemplo, use archivo.tar.gz, siempre
+             incluya la extensión "
+             
+             exit
+             ;;
+             
+     esac
+ }
+
+
+
+
+tail-with-colors () {
+    if [ -z "$1" ] ; then
+        echo "Please specify a file for monitoring"
+        return
+    fi
+
+    tail -f $1 | awk '
+                {matched=0}
+                /INFO:/    {matched=1; print "\033[0;37m" $0 "\033[0m"}   # WHITE
+                /NOTICE:/  {matched=1; print "\033[0;36m" $0 "\033[0m"}   # CYAN
+                /WARNING:/ {matched=1; print "\033[0;34m" $0 "\033[0m"}   # BLUE
+                /ERROR:/   {matched=1; print "\033[0;31m" $0 "\033[0m"}   # RED
+                /ALERT:/   {matched=1; print "\033[0;35m" $0 "\033[0m"}   # PURPLE
+                matched==0            {print "\033[0;33m" $0 "\033[0m"}   # YELLOW
+        '
+}
+
+
+## netstat with colours
+
+netstatColor () {
+
+cyan="\E[1;36m\E[1m";
+normal="\E[m";
+blue="\E[34m\E[1m";
+violet="\E[35m\E[1m";
+red="\E[31m\E[1m";
+yellow="\E[33m\E[1m";
+green="\E[37m\E[32m\E[1m";
+text="\E[1;37m\E[1m";
+ 
+if [ "$UID" != "0" ]; then
+    echo -e "$red$0: You will get more information if you have root privileges. Try sudo $0$normal"
+fi
+ 
+netstat -natp | \
+while read line; do
+ 
+    if [ `echo $line | awk '{print($1)}'` = "Proto" ]; then
+        echo -e "$yellow=====================================================================================================$normal"
+        echo -e "$text$line$normal"
+        echo -e "$yellow=====================================================================================================$normal"
+    else
+ 
+        state=`echo $line | awk '{print($6)}'`
+        color=$normal
+        case $state in
+            "ESTABLISHED")
+                color=$green;;
+            "SYN_SENT" | "SYN_RECV")
+                color=$yellow;;
+            "FIN_WAIT1" | "FIN_WAIT2" |"TIME_WAIT")
+                color=$violet;;
+            "CLOSE" | "CLOSE_WAIT" | "LAST_ACK" | "CLOSING" )
+                color=$blue;;
+            "LISTEN")
+                color=$cyan;;
+            "UNKNOWN")
+                color=$red;;
+            *)
+        esac
+        echo -e "$color$line$normal"
+ 
+    fi
+done;
+}

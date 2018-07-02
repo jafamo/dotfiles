@@ -1,0 +1,2 @@
+#Every 5 seconds
+watch -n 5 mysqladmin --user=root --password= processlist| tee -a /home/user/file.txt
