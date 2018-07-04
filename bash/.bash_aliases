@@ -13,7 +13,7 @@ alias gitonelinedates="git log --pretty=format:'%h was %an, %ai, message: %s'"
 
 alias gitlogall="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
-
+alias git-update-all="for i in */.git; do ( echo $i; cd $i/..; git fetch --all && git pull; ); done"
 ## ls ## {{{
 alias ls='ls -hF --color=auto'
 alias lr='ls -R'                    # recursive ls
