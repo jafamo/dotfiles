@@ -16,6 +16,7 @@ FOLDER=/mnt/linux/backup/databases/
 FILE=${FOLDER}$1.sql.`date +"%Y%m%d"`
 DBSERVER=127.0.0.1
 DATABASE=$1
+LOG=$DATABASE.log
 USER=$2
 PASS=$3
 
@@ -44,3 +45,7 @@ gzip $FILE
 # (5) show the user the result
 echo "${FILE}.gz was created:"
 ls -l ${FILE}.gz
+
+# (6) delete old backups and logs deleted
+find $FOLDER$DATABASE/  -type f -mtime +30 -name "*.gz"  -print  -delete >> $FOLDER$DATABASE/$LOG
+
